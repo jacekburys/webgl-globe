@@ -10,7 +10,7 @@
       body {
         margin: 0;
         padding: 0;
-        background: #000000 url(/globe/loading.gif) center center no-repeat;
+        background: #000000 url(loading.gif) center center no-repeat;
         color: #ffffff;
         font-family: sans-serif;
         font-size: 13px;
@@ -95,7 +95,7 @@
         position: absolute;
         bottom: 15px;
         left: 20px;
-        background: url(/globe/ce.png);
+        background: url(ce.png);
       }
 
 
@@ -123,11 +123,14 @@
     <span>This is a Chrome Experiment</span>
   </a>
 
-  <script type="text/javascript" src="/globe/third-party/Detector.js"></script>
-  <script type="text/javascript" src="/globe/third-party/three.min.js"></script>
-  <script type="text/javascript" src="/globe/third-party/Tween.js"></script>
-  <script type="text/javascript" src="/globe/globe.js"></script>
-  <script type="text/javascript">
+  <script type="text/javascript" src="third-party/Detector.js"></script>
+  <script type="text/javascript" src="third-party/three.min.js"></script>
+  <script type="text/javascript" src="third-party/Tween.js"></script>
+  <script type="text/javascript" src="globe.js"></script>
+  <script type="text/javascript" src="blur.js"></script>
+  <script type="text/javascript" >
+
+    console.log(mydata);
 
     if(!Detector.webgl){
       Detector.addGetWebGLMessage();
@@ -163,9 +166,20 @@
       var xhr;
       TWEEN.start();
       
+      window.data = mydata;
+      globe.addData(mydata, {format: 'magnitude', name: "test", animated: true});
+      //for (i=0;i<mydata.length;i++) {
+      //  globe.addData(mydata[i][1], {format: 'magnitude', name: mydata[i][0], animated: true});
+      //}
+      globe.createPoints();
+      settime(globe,0)();
+      globe.animate();
+      document.body.style.backgroundImage = 'none'; // remove loading
       
+      /*
       xhr = new XMLHttpRequest();
-      xhr.open('GET', '/globe/population909500.json', true);
+     // xhr.open('GET', 'population909500.json', true);
+      xhr.open('GET', 'mydata.json', true);
       xhr.onreadystatechange = function(e) {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
@@ -182,6 +196,8 @@
         }
       };
       xhr.send(null);
+      */
+      
     }
 
   </script>
