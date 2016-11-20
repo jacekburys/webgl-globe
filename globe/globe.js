@@ -18,7 +18,7 @@ DAT.Globe = function(container, opts) {
   
   var colorFn = opts.colorFn || function(x) {
     var c = new THREE.Color();
-    c.setHSL( ( 0.6 - ( x * 0.5 ) ), 1.0, 0.5 );
+    c.setHSL( ( 0.3 - ( x * 0.5 ) ), 1.0, 0.5 );
     return c;
   };
   var imgDir = ""; //opts.imgDir || '/globe/';
@@ -103,32 +103,29 @@ DAT.Globe = function(container, opts) {
 
     shader = Shaders['earth'];
     uniforms = THREE.UniformsUtils.clone(shader.uniforms);
-
-    uniforms['texture'].value = THREE.ImageUtils.loadTexture(imgDir+'world.jpg');
+    uniforms['texture'].value = THREE.ImageUtils.loadTexture(imgDir+'earthmap1k.jpg');
 
     material = new THREE.ShaderMaterial({
-
           uniforms: uniforms,
           vertexShader: shader.vertexShader,
           fragmentShader: shader.fragmentShader
 
         });
-
+		
     mesh = new THREE.Mesh(geometry, material);
     mesh.rotation.y = Math.PI;
     scene.add(mesh);
-
-    shader = Shaders['atmosphere'];
+	
+	shader = Shaders['atmosphere'];
     uniforms = THREE.UniformsUtils.clone(shader.uniforms);
-
+	
     material = new THREE.ShaderMaterial({
 
-          uniforms: uniforms,
           vertexShader: shader.vertexShader,
           fragmentShader: shader.fragmentShader,
           side: THREE.BackSide,
           blending: THREE.AdditiveBlending,
-          transparent: true
+		  transparent: true
 
         });
 

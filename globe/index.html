@@ -105,10 +105,6 @@
 
   <div id="container"></div>
 
-  <div id="info">
-    <strong><a href="http://www.chromeexperiments.com/globe">WebGL Globe</a></strong> <span class="bull">&bull;</span> Created by the Google Data Arts Team <span class="bull">&bull;</span> Data acquired from <a href="http://sedac.ciesin.columbia.edu/gpw/">SEDAC</a>
-  </div>
-
   <div id="currentInfo">
     <span id="spring" class="season">Spring</span>
     <span id="summer" class="season">Summer</span>
@@ -139,7 +135,7 @@
 
       var seasons = ['spring','summer','fall', 'winter'];
       var container = document.getElementById('container');
-      var globe = new DAT.Globe(container);
+	  var globe = new DAT.Globe(container);
 
       console.log(globe);
       var i, tweens = [];
