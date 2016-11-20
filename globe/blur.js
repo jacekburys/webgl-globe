@@ -79,7 +79,7 @@ function getBlurredData(arr) {
     }
     var y = Math.floor(arr[i].latitude) ;
     var x = Math.floor(arr[i].longtitude);
-    var mag = arr[i].magnitude * 150;
+    var mag = arr[i].magnitude * 1000;
     M1[(y+90)*360 + x+180] = mag;
 
     var M2 = new Array(360*180);

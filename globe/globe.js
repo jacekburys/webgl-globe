@@ -242,6 +242,11 @@ DAT.Globe = function(container, opts) {
     }
   }
 
+  function removePoints() {
+    if (!this.points) return;
+    scene.remove(this.points);
+  }
+
   function addPoint(lat, lng, size, color, subgeo) {
 
     var phi = (90 - lat) * Math.PI / 180;
@@ -395,10 +400,23 @@ DAT.Globe = function(container, opts) {
     this._time = t;
   });
 
+  function clearData() {
+    this._baseGeometry = undefined;
+    /*
+    this.points = new THREE.Mesh(this._baseGeometry, new THREE.MeshBasicMaterial({
+          color: 0xffffff,
+          vertexColors: THREE.FaceColors,
+          morphTargets: true
+        }));
+    */
+  }
+
   this.addData = addData;
   this.createPoints = createPoints;
   this.renderer = renderer;
   this.scene = scene;
+  this.removePoints = removePoints;
+  this.clearData = clearData;
 
   return this;
 
