@@ -22,13 +22,14 @@ function boxBlur_2 (scl, tcl, w, h, r) {
     for(var i=0; i<h; i++)
         for(var j=0; j<w; j++) {
             var val = 0;
-            for(var iy=i-r; iy<i+r+1; iy++)
+            for(var iy=i-r; iy<i+r+1; iy++) {
                 for(var ix=j-r; ix<j+r+1; ix++) {
-                    var x = Math.min(w-1, Math.max(0, ix));
-                    var y = Math.min(h-1, Math.max(0, iy));
+                    var x = (ix + w) % w;//Math.min(w-1, Math.max(0, ix));
+                    var y = (iy + h) % h;//Math.min(h-1, Math.max(0, iy));
                     if ((i-iy) * (i-iy) + (j-ix) * (j-ix) >= r*r) continue;
                     val += scl[y*w+x];
                 }
+            }
             tcl[i*w+j] = val/((r+r+1)*(r+r+1));
         }
 }
@@ -70,26 +71,33 @@ function getBlurredData(arr) {
   for (var i=0; i<360*180; i++) {
     M[i] = 0;
   }
+
   for (var i = 0; i < arr.length; i++) {
-    var x = Math.floor(arr[i].lat) ;
-    var y = Math.floor(arr[i].lng);
-    var mag = arr[i].mag;
-    M[(y+90)*360 + x+180] = mag;
+    var M1 = new Array(360*180);
+    for (var j=0; j<360*180; j++) {
+      M1[j] = 0;
+    }
+    var y = Math.floor(arr[i].latitude) ;
+    var x = Math.floor(arr[i].longtitude);
+    var mag = arr[i].magnitude * 150;
+    M1[(y+90)*360 + x+180] = mag;
+
+    var M2 = new Array(360*180);
+    for (var j=0; j<360*180; j++) {
+      M2[j] = 0;
+    }
+    gaussBlur_2(M1, M2, 360, 180, 4);
+    for (var j=0; j<360*180; j++) {
+      M[j] += M2[j];
+    }
   }
-  console.log(M);
-  var M2 = new Array(360*180);
-  for (var i=0; i<360*180; i++) {
-    M2[i] = 0;
-  }
-  gaussBlur_2(M, M2, 360, 180, 7);
-  console.log(M2);
   var res = [];
   for (var i=0; i<180; i++) {
     for (var j=0; j<360; j++) {
-      if (!M2[i*360 + j]) continue;
+      if (!M[i*360 + j]) continue;
       res.push(i-90);
       res.push(j-180);
-      res.push(M2[i*360 + j]);
+      res.push(M[i*360 + j]);
     }
   }
   return res;
@@ -107,9 +115,9 @@ var mags = [
     mag: 25
   },
   {
-    lat: 5,
+    lat: 10,
     lng: 10,
-    mag: 75
+    mag: 300
   }
 ];
-var mydata = getBlurredData(mags);
+//var mydata = getBlurredData(mags);

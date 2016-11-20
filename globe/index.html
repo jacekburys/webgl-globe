@@ -130,7 +130,7 @@
   <script type="text/javascript" src="blur.js"></script>
   <script type="text/javascript" >
 
-    console.log(mydata);
+    //console.log(mydata);
 
     if(!Detector.webgl){
       Detector.addGetWebGLMessage();
@@ -166,6 +166,7 @@
       var xhr;
       TWEEN.start();
       
+      /*
       window.data = mydata;
       globe.addData(mydata, {format: 'magnitude', name: "test", animated: true});
       //for (i=0;i<mydata.length;i++) {
@@ -175,11 +176,35 @@
       settime(globe,0)();
       globe.animate();
       document.body.style.backgroundImage = 'none'; // remove loading
+      */
+
+      xhr = new XMLHttpRequest();
+      xhr.open('GET', 'airport_data.json', true);
+      xhr.onreadystatechange = function(e) {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            var data = JSON.parse(xhr.responseText);
+            window.data = data;
+            //for (i=0;i<data.length;i++) {
+            //  globe.addData(data[i][1], {format: 'magnitude', name: data[i][0], animated: true});
+            //}
+            console.log('globe');
+            console.log(data.globe.length);
+            var mydata = getBlurredData(data.globe);
+            globe.addData(mydata, {format: 'magnitude', name: mydata, animated: true});
+            globe.createPoints();
+            settime(globe,0)();
+            globe.animate();
+            document.body.style.backgroundImage = 'none'; // remove loading
+          }
+        }
+      };
+      xhr.send(null);
       
       /*
       xhr = new XMLHttpRequest();
      // xhr.open('GET', 'population909500.json', true);
-      xhr.open('GET', 'mydata.json', true);
+      xhr.open('GET', 'airport_data.json', true);
       xhr.onreadystatechange = function(e) {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
